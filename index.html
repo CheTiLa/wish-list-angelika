@@ -438,6 +438,55 @@ header.hero {
   }
 }
 
+/* ===== GIFT STYLE WISH CARDS ===== */
+
+.card {
+  border: 1px solid #efd4dc;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #fffefd, #fff6f7);
+  box-shadow: 0 8px 25px rgba(190, 133, 151, .13);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(190, 133, 151, .22);
+}
+
+.card img {
+  border-radius: 17px;
+  margin: 9px;
+  width: calc(100% - 18px);
+}
+
+.card-content {
+  padding: 18px;
+}
+
+.card h3 {
+  color: #b87990;
+  line-height: 1.35;
+}
+
+.card-content button {
+  margin-top: 7px;
+}
+
+.card.fulfilled {
+  border-color: #e8d2ac;
+  background: linear-gradient(145deg, #fffefa, #fff8eb);
+}
+
+.card::before {
+  content: "✧";
+  position: absolute;
+  top: 12px;
+  right: 17px;
+  color: #d5a5b4;
+  pointer-events: none;
+  z-index: 2;
+}
+
   
 </style>
 </head>

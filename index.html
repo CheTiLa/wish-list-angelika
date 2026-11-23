@@ -37,19 +37,16 @@ footer{text-align:center;padding:35px;color:#a88c9a}
 </style>
 </head>
 <body>
-
 <header>
 <h1>Wish list Angelika ♡</h1>
 <div class="subtitle">Маленькие мечты и большие желания ✨</div>
 </header>
-
 <main>
 <section class="panel">
 <div class="topline">
 <strong>Мой список желаний ♡</strong>
 <button id="loginToggle" class="secondary" onclick="toggleLogin()">Войти</button>
 </div>
-
 <div id="loginPanel" class="hidden">
 <h3>Вход администратора</h3>
 <form id="loginForm">
@@ -60,43 +57,35 @@ footer{text-align:center;padding:35px;color:#a88c9a}
 <button type="submit">Войти</button>
 </form>
 </div>
-
 <div id="adminPanel" class="hidden">
 <p>Ты вошла как администратор 💗</p>
 <button class="secondary" onclick="logout()">Выйти</button>
 </div>
 <div id="message"></div>
 </section>
-
 <section id="editor" class="panel hidden">
 <h2 id="formTitle">Добавить желание ♡</h2>
 <form id="wishForm">
 <label>Название желания *</label>
 <input id="title" required maxlength="150" placeholder="Например, сумочка мечты">
-
 <label>Описание</label>
 <textarea id="description" placeholder="Расскажи о своём желании"></textarea>
-
 <label>Цена</label>
 <input id="price" placeholder="Например, 5 000 ₽">
-
 <label>Категория</label>
 <input id="category" placeholder="Красота, одежда, техника...">
-
 <label>Ссылка на магазин</label>
 <input id="productUrl" type="url" placeholder="https://...">
 
 <label>Фотография</label>
 <input id="imageFile" type="file" accept="image/*">
 <p class="muted">Можно загрузить JPG, PNG или WebP.</p>
-
 <div class="actions">
 <button type="submit" id="saveButton">Добавить желание</button>
 <button type="button" class="secondary hidden" id="cancelButton" onclick="cancelEdit()">Отмена</button>
 </div>
 </form>
 </section>
-
 <section>
 <div class="topline" style="margin:25px 0 17px">
 <h2>Мои желания</h2>
@@ -105,37 +94,28 @@ footer{text-align:center;padding:35px;color:#a88c9a}
 <div id="wishes" class="grid"></div>
 </section>
 </main>
-
 <footer>Создано с любовью ♡ Angelika</footer>
-
 <script>
 // ВСТАВЬ СЮДА СВОИ ДАННЫЕ ИЗ SUPABASE
- const SUPABASE_URL = "https://ramhwwrpsdiyufgkwtjl.supabase.co";
+const SUPABASE_URL = "https://ramhwwrpsdiyufgkwtjl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_xn2eUru7V0E-zFpfxPI7Xw_iHqc7Sfw";
-
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
 let currentUser = null;
 let editingId = null;
 let currentImage = "";
-
 const $ = id => document.getElementById(id);
-
 function showMessage(text) {
   $("message").textContent = text;
 }
-
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, char => ({
     "&":"&amp;","<":"&lt;",">":"&gt;",
     '"':"&quot;","'":"&#039;"
   })[char]);
 }
-
 function toggleLogin() {
   $("loginPanel").classList.toggle("hidden");
 }
-
 function safeUrl(value) {
   try {
     const url = new URL(value);
@@ -144,18 +124,15 @@ function safeUrl(value) {
     return "";
   }
 }
-
 async function loadWishes() {
   const {data, error} = await db
     .from("wishes")
     .select("*")
     .order("created_at", {ascending:false});
-
   if (error) {
     showMessage("Не удалось загрузить желания: " + error.message);
     return;
   }
-
   $("count").textContent = Всего: ${data.length};
   const container = $("wishes");
   container.innerHTML = "";
@@ -164,7 +141,6 @@ async function loadWishes() {
     container.innerHTML = '<p class="muted">Пока здесь нет желаний. Скоро они появятся ♡</p>';
     return;
   }
-
   data.forEach(wish => {
     const card = document.createElement("article");
     card.className = "card";
@@ -172,19 +148,16 @@ async function loadWishes() {
     const image = wish.image_url
       ? <img src="${escapeHTML(wish.image_url)}" alt="${escapeHTML(wish.title)}">
       : "";
-
     const link = safeUrl(wish.product_url);
     const linkHTML = link
       ? <p><a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">Посмотреть в магазине ↗</a></p>
       : "";
-
     const adminButtons = currentUser
       ? `<div class="actions">
           <button class="secondary edit-button">Изменить</button>
           <button class="danger delete-button">Удалить</button>
         </div>`
       : "";
-
     card.innerHTML = `
       ${image}
       <div class="card-content">
@@ -195,16 +168,13 @@ async function loadWishes() {
         ${linkHTML}
         ${adminButtons}
       </div>`;
-
     if (currentUser) {
       card.querySelector(".edit-button").onclick = () => editWish(wish);
       card.querySelector(".delete-button").onclick = () => deleteWish(wish);
     }
-
     container.appendChild(card);
   });
 }
-
 function updateInterface() {
   $("loginToggle").classList.toggle("hidden", !!currentUser);
   $("loginPanel").classList.add("hidden");
@@ -212,26 +182,21 @@ function updateInterface() {
   $("editor").classList.toggle("hidden", !currentUser);
   loadWishes();
 }
-
 $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
   showMessage("Выполняется вход...");
-
   const {data, error} = await db.auth.signInWithPassword({
     email: $("email").value,
     password: $("password").value
   });
-
   if (error) {
     showMessage("Ошибка входа: " + error.message);
     return;
   }
-
   currentUser = data.user;
   updateInterface();
   showMessage("Добро пожаловать! 💗");
 });
-
 async function logout() {
   const {error} = await db.auth.signOut();
   if (error) {
@@ -243,7 +208,6 @@ async function logout() {
   updateInterface();
   showMessage("Ты вышла из аккаунта.");
 }
-
 function cancelEdit() {
   editingId = null;
   currentImage = "";
@@ -252,7 +216,6 @@ function cancelEdit() {
   $("saveButton").textContent = "Добавить желание";
   $("cancelButton").classList.add("hidden");
 }
-
 function editWish(wish) {
   editingId = wish.id;
   currentImage = wish.image_url || "";
@@ -263,23 +226,18 @@ function editWish(wish) {
   $("category").value = wish.category || "";
   $("productUrl").value = wish.product_url || "";
   $("imageFile").value = "";
-
   $("formTitle").
    textContent = "Редактировать желание";
   $("saveButton").textContent = "Сохранить изменения";
   $("cancelButton").classList.remove("hidden");
-
   $("editor").scrollIntoView({behavior:"smooth"});
 }
-
 $("wishForm").addEventListener("submit", async event => {
   event.preventDefault();
-
   if (!currentUser) {
     showMessage("Сначала войди в аккаунт.");
     return;
   }
-
   const title = $("title").value.trim();
   if (!title) return;
 
@@ -291,25 +249,19 @@ $("wishForm").addEventListener("submit", async event => {
       showMessage("Выбери файл изображения.");
       return;
     }
-
     const extension = file.name.split(".").pop().replace(/[^a-zA-Z0-9]/g,"") || "jpg";
     const path = ${currentUser.id}/${Date.now()}.${extension};
-
     showMessage("Загружаю фотографию...");
-
     const {error: uploadError} = await db.storage
       .from("wish-images")
       .upload(path, file, {upsert:false});
-
     if (uploadError) {
       showMessage("Ошибка загрузки фото: " + uploadError.message);
       return;
     }
-
     const {data} = db.storage.from("wish-images").getPublicUrl(path);
     imageUrl = data.publicUrl;
   }
-
   const wish = {
     title,
     description: $("description").value.trim(),
@@ -318,9 +270,7 @@ $("wishForm").addEventListener("submit", async event => {
     product_url: $("productUrl").value.trim(),
     image_url: imageUrl
   };
-
   let result;
-
   if (editingId) {
     result = await db.from("wishes")
       .update(wish)
@@ -329,44 +279,35 @@ $("wishForm").addEventListener("submit", async event => {
     result = await db.from("wishes")
       .insert({...wish, user_id:currentUser.id});
   }
-
   if (result.error) {
     showMessage("Не удалось сохранить: " + result.error.message);
     return;
   }
-
   cancelEdit();
   showMessage("Желание сохранено! ♡");
   await loadWishes();
 });
-
 async function deleteWish(wish) {
   if (!confirm(`Удалить желание «${wish.title}»?`)) return;
-
   const {error} = await db.from("wishes")
     .delete()
     .eq("id", wish.id);
-
   if (error) {
     showMessage("Не удалось удалить: " + error.message);
     return;
   }
-
   showMessage("Желание удалено.");
   loadWishes();
 }
-
 async function init() {
   const {data} = await db.auth.getSession();
   currentUser = data.session?.user || null;
   updateInterface();
-
   db.auth.onAuthStateChange((_event, session) => {
     currentUser = session?.user || null;
     updateInterface();
   });
 }
-
 init();
 </script>
 </body>

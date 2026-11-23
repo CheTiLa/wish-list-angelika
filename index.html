@@ -189,7 +189,7 @@ async function loadWishes() {
       ${image}
       <div class="card-content">
         <h3>${escapeHTML(wish.title)}</h3>
-        ${wish.category ? <p class="muted">${escapeHTML(wish.category)}</p> : ""}
+        ${wish.category ? `<p class="muted">{escapeHTML(wish.category)}</p>` : ""}
         ${wish.description ? <p>${escapeHTML(wish.description)}</p> : ""}
         ${wish.price ? <div class="price">${escapeHTML(wish.price)}</div> : ""}
         ${linkHTML}

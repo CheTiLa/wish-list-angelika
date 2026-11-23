@@ -48,13 +48,202 @@ button:disabled{opacity:.6;cursor:wait}
 footer{text-align:center;padding:35px;color:#a88c9a}
 .topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 @media(max-width:550px){h1{font-size:30px}.panel{padding:16px}}
+
+/* ===== POWDER PINK & PEARLS ===== */
+
+body {
+  background: #fffaf9;
+  color: #6d535c;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+header {
+  position: relative;
+  overflow: hidden;
+  padding: 75px 20px 65px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 15% 20%, #ffffff 0%, transparent 35%),
+    linear-gradient(135deg, #fff8f6, #f8e3e9, #fdf3ef);
+  border-bottom: 1px solid #f0dce1;
+}
+
+header::before {
+  content: "୨୧";
+  display: block;
+  color: #c98fa2;
+  font-size: 35px;
+  margin-bottom: 12px;
+}
+
+header::after {
+  content: "♡  ·  ✧  ·  ♡";
+  display: block;
+  color: #c69a9d;
+  font-size: 19px;
+  margin-top: 18px;
+  letter-spacing: 8px;
+}
+
+header h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: normal;
+  letter-spacing: 1px;
+  color: #b87990;
+  text-shadow: 1px 2px 8px #ffffff;
+}
+
+.subtitle {
+  color: #987985;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+main {
+  max-width: 1120px;
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+
+h2 {
+  color: #b87990;
+  font-family: Georgia, serif;
+  font-weight: normal;
+}
+
+.panel {
+  background: rgba(255,255,255,.88);
+  border: 1px solid #f1dfe4;
+  border-radius: 23px;
+  box-shadow: 0 8px 28px #d6a9b51c;
+  padding: 25px;
+}
+
+.card {
+  position: relative;
+  background: #fffefd;
+  border: 1px solid #f0e0e3;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 7px 22px #d9b5bf20;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 13px 28px #d9aabf35;
+}
+
+.card img {
+  height: 235px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card h3 {
+  color: #b87990;
+  font-family: Georgia, serif;
+  font-size: 23px;
+  font-weight: normal;
+}
+
+.price {
+  color: #b87990;
+  font-size: 17px;
+}
+
+button {
+  background: linear-gradient(135deg, #e9b9c9, #d99caf);
+  color: white;
+  border-radius: 30px;
+  padding: 12px 22px;
+  box-shadow: 0 4px 12px #d7a2b32b;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #dfa9bd, #cf8fa6);
+  transform: translateY(-2px);
+}
+
+button.secondary {
+  background: #f8edf0;
+  color: #a66e83;
+  box-shadow: none;
+}
+
+button.danger {
+  background: #b9788b;
+  color: white;
+}
+
+input, textarea {
+  border: 1px solid #ecd8df;
+  border-radius: 13px;
+  background: #fffdfd;
+  color: #6d535c;
+  padding: 13px;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #d99caf;
+  box-shadow: 0 0 0 3px #f8e5eb;
+}
+
+.fulfilled-badge {
+  background: linear-gradient(135deg, #fff2d9, #fff8ec);
+  color: #a77b48;
+  letter-spacing: 1px;
+  padding: 15px;
+}
+
+.card.fulfilled {
+  border: 1px solid #e8d2ac;
+  background: #fffdf8;
+}
+
+#totalCount, #fulfilledCount {
+  font-family: Georgia, serif;
+  font-weight: normal !important;
+}
+
+footer {
+  background: #fbf0f2;
+  border-top: 1px solid #f0dce1;
+  color: #b18493;
+  letter-spacing: 1px;
+}
+
+a {
+  color: #b87990;
+  text-decoration-color: #e9c8d2;
+  text-underline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, button {
+    transition: none;
+  }
+}
+
 </style>
 </head>
 <body>
 
+
 <header>
-  <h1>Wish list Angelika ♡</h1>
-  <div class="subtitle">Маленькие мечты и большие желания ✨</div>
+  <h1>Wish list Angelika</h1>
+  <div class="subtitle">
+    Маленькие мечты — большие чудеса ♡
+  </div>
+  <div style="margin-top:18px;color:#c18da0;font-size:22px">
+    🎀　♡　🤍　♡　🎀
+  </div>
 </header>
 
 <main>

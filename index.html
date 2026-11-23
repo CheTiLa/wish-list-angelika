@@ -336,21 +336,131 @@ footer::before {
   }
 }
 
+/* ===== DREAMY HERO COVER ===== */
+
+header.hero {
+  position: relative;
+  min-height: 350px;
+  padding: 55px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, #fffefe 0%, transparent 55%),
+    linear-gradient(135deg, #f9e0e7, #fff8f5, #f4dce5);
+  border-bottom: 1px solid #edcbd5;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-logo {
+  color: #b87990;
+  font-size: 27px;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  color: #bd788e;
+  font-family: Georgia, serif;
+  font-size: clamp(34px, 6vw, 58px);
+  font-weight: normal;
+  line-height: 1.2;
+  text-shadow: 0 2px 12px white;
+}
+
+.hero-divider {
+  color: #c78da0;
+  font-size: 25px;
+  margin: 18px 0;
+}
+
+.hero .subtitle {
+  color: #98717e;
+  font-size: 17px;
+}
+
+.hero-decor {
+  position: absolute;
+  pointer-events: none;
+}
+
+.hero-bow {
+  left: 4%;
+  top: 35px;
+  font-size: clamp(65px, 12vw, 145px);
+  transform: rotate(-12deg);
+  opacity: .9;
+}
+
+.hero-pearls {
+  right: 4%;
+  top: 35px;
+  color: #c99aaa;
+  font-size: 22px;
+  letter-spacing: 5px;
+}
+
+.hero-flowers {
+  right: 5%;
+  bottom: 25px;
+  font-size: 34px;
+  opacity: .8;
+}
+
+@media (max-width: 600px) {
+  header.hero {
+    min-height: 300px;
+    padding: 45px 15px;
+  }
+
+  .hero-bow {
+    left: 2%;
+    top: 8px;
+    font-size: 55px;
+  }
+
+  .hero-pearls {
+    right: 3%;
+    top: 12px;
+    font-size: 14px;
+  }
+
+  .hero-flowers {
+    right: 3%;
+    bottom: 8px;
+    font-size: 23px;
+  }
+}
+
   
 </style>
 </head>
 <body>
 
 
-<header>
-  <h1>Wish list Angelika</h1>
-  <div class="subtitle">
-    Маленькие мечты — большие чудеса ♡
+
+<header class="hero">
+  <div class="hero-decor hero-bow">🎀</div>
+  <div class="hero-decor hero-pearls">♡ · ◦ · ♡ · ◦ · ♡</div>
+
+  <div class="hero-content">
+    <div class="hero-logo">Wish list Angelika ♡</div>
+    <h1>Маленькие мечты —<br>большие чудеса</h1>
+    <div class="hero-divider">୨୧ ✧ ୨୧</div>
+    <div class="subtitle">
+      Пусть все желания сбудутся! ✨
+    </div>
   </div>
-  <div style="margin-top:18px;color:#c18da0;font-size:22px">
-    🎀　♡　🤍　♡　🎀
-  </div>
+
+  <div class="hero-decor hero-flowers">🌸 🌷 🌸</div>
 </header>
+
 
 <main>
   <section class="panel">

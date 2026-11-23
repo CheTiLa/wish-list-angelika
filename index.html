@@ -1,0 +1,49 @@
+My wishes. My little world.</p>
+ </section>
+
+<footer>© 2026 Wish list Angelika ♡</footer>
+
+<script>
+const items=[
+ {name:"Любимый парфюм",cat:"Beauty",desc:"Аромат, о котором мечтаю.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1541643600914-78b084683601?w=800",url:""},
+ {name:"Стильная сумочка",cat:"Fashion",desc:"Новое дополнение к гардеробу.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800",url:""},
+ {name:"Нежные украшения",cat:"Accessories",desc:"Маленькая деталь моего образа.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800",url:""},
+ {name:"Уютный декор",cat:"Lifestyle",desc:"Красивые вещи для дома.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800",url:""},
+ {name:"Косметика",cat:"Beauty",desc:"Мои будущие beauty-фавориты.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800",url:""},
+ {name:"Новое платье",cat:"Fashion",desc:"Образ для особенного дня.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800",url:""}
+];
+let selected="all";
+function render(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const list=items.filter(x=>(selected==="all"||x.cat===selected)&&x.name.toLowerCase().includes(q));
+ const root=document.getElementById("cards");
+ root.innerHTML="";
+ if(!list.length){root.innerHTML='<div class="empty">Пока ничего не найдено ♡</div>';return}
+ list.forEach(x=>{
+  const card=document.createElement("article");
+  card.className="card";
+  const img=document.createElement("img");
+  img.src=x.img;img.alt=x.name;img.loading="lazy";
+  img.onerror=()=>img.style.display="none";
+  const content=document.createElement("div");
+  content.className="content";
+  const tag=document.createElement("div");tag.className="tag";tag.textContent=x.cat;
+  const title=document.createElement("h3");title.textContent=x.name;
+  const desc=document.createElement("p");desc.textContent=x.desc;
+  const price=document.createElement("div");price.className="price";price.textContent=x.price;
+  content.append(tag,title,desc,price);
+  if(x.url){
+   const a=document.createElement("a");a.href=x.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Посмотреть ♡";content.append(a);
+  }
+  card.append(img,content);root.append(card);
+ });
+}
+document.querySelectorAll(".category").forEach(b=>b.addEventListener("click",()=>{
+ selected=b.dataset.cat;
+ document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
+ b.classList.add("active");render();
+}));
+render();
+</script>
+</body>
+</html>

@@ -133,7 +133,7 @@ async function loadWishes() {
     showMessage("Не удалось загрузить желания: " + error.message);
     return;
   }
-  $("count").textContent = Всего: ${data.length};
+  $("count").textContent = `Всего: ${data.length}`;
   const container = $("wishes");
   container.innerHTML = "";
 

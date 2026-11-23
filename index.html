@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -16,10 +18,11 @@ main{max-width:1050px;margin:30px auto;padding:0 18px}
 input,textarea,button{font:inherit}
 input,textarea{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #e8ccd9;border-radius:10px;background:#fffafd}
 textarea{min-height:85px;resize:vertical}
-button,.link-button{border:0;border-radius:22px;padding:11px 20px;background:#d99ab5;color:white;cursor:pointer;font-weight:bold}
+button{border:0;border-radius:22px;padding:11px 20px;background:#d99ab5;color:white;cursor:pointer;font-weight:bold}
 button:hover{background:#c77e9f}
 button.secondary{background:#f4e5ec;color:#86576e}
 button.danger{background:#a75d75}
+button:disabled{opacity:.6;cursor:wait}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:20px}
 .card{background:white;border:1px solid #f0dce5;border-radius:17px;overflow:hidden;box-shadow:0 5px 18px #dca9bf20}
@@ -30,92 +33,114 @@ button.danger{background:#a75d75}
 .card a{color:#b56e8d}
 .muted{color:#9b8991;font-size:14px}
 .hidden{display:none!important}
-#message{margin:12px 0;color:#a45f7d}
+#message{margin:12px 0;color:#a45f7d;overflow-wrap:anywhere}
 footer{text-align:center;padding:35px;color:#a88c9a}
 .topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 @media(max-width:550px){h1{font-size:30px}.panel{padding:16px}}
 </style>
 </head>
 <body>
-<header>
-<h1>Wish list Angelika ♡</h1>
-<div class="subtitle">Маленькие мечты и большие желания ✨</div>
-</header>
-<main>
-<section class="panel">
-<div class="topline">
-<strong>Мой список желаний ♡</strong>
-<button id="loginToggle" class="secondary" onclick="toggleLogin()">Войти</button>
-</div>
-<div id="loginPanel" class="hidden">
-<h3>Вход администратора</h3>
-<form id="loginForm">
-<label>Электронная почта</label>
-<input id="email" type="email" required placeholder="Твоя почта">
-<label>Пароль</label>
-<input id="password" type="password" required placeholder="Пароль">
-<button type="submit">Войти</button>
-</form>
-</div>
-<div id="adminPanel" class="hidden">
-<p>Ты вошла как администратор 💗</p>
-<button class="secondary" onclick="logout()">Выйти</button>
-</div>
-<div id="message"></div>
-</section>
-<section id="editor" class="panel hidden">
-<h2 id="formTitle">Добавить желание ♡</h2>
-<form id="wishForm">
-<label>Название желания *</label>
-<input id="title" required maxlength="150" placeholder="Например, сумочка мечты">
-<label>Описание</label>
-<textarea id="description" placeholder="Расскажи о своём желании"></textarea>
-<label>Цена</label>
-<input id="price" placeholder="Например, 5 000 ₽">
-<label>Категория</label>
-<input id="category" placeholder="Красота, одежда, техника...">
-<label>Ссылка на магазин</label>
-<input id="productUrl" type="url" placeholder="https://...">
 
-<label>Фотография</label>
-<input id="imageFile" type="file" accept="image/*">
-<p class="muted">Можно загрузить JPG, PNG или WebP.</p>
-<div class="actions">
-<button type="submit" id="saveButton">Добавить желание</button>
-<button type="button" class="secondary hidden" id="cancelButton" onclick="cancelEdit()">Отмена</button>
-</div>
-</form>
-</section>
-<section>
-<div class="topline" style="margin:25px 0 17px">
-<h2>Мои желания</h2>
-<span id="count" class="muted"></span>
-</div>
-<div id="wishes" class="grid"></div>
-</section>
+<header>
+  <h1>Wish list Angelika ♡</h1>
+  <div class="subtitle">Маленькие мечты и большие желания ✨</div>
+</header>
+
+<main>
+  <section class="panel">
+    <div class="topline">
+      <strong>Мой список желаний ♡</strong>
+      <button type="button" id="loginToggle" class="secondary">Войти</button>
+    </div>
+
+    <div id="loginPanel" class="hidden">
+      <h3>Вход администратора</h3>
+      <form id="loginForm">
+        <label>Электронная почта</label>
+        <input id="email" type="email" required placeholder="Твоя почта">
+        <label>Пароль</label>
+        <input id="password" type="password" required placeholder="Пароль">
+        <button type="submit" id="loginButton">Войти</button>
+      </form>
+    </div>
+
+    <div id="adminPanel" class="hidden">
+      <p>Ты вошла как администратор 💗</p>
+      <button type="button" class="secondary" id="logoutButton">Выйти</button>
+    </div>
+    <div id="message"></div>
+  </section>
+
+  <section id="editor" class="panel hidden">
+    <h2 id="formTitle">Добавить желание ♡</h2>
+    <form id="wishForm">
+      <label>Название желания *</label>
+      <input id="title" required maxlength="150" placeholder="Например, сумочка мечты">
+
+      <label>Описание</label>
+      <textarea id="description" placeholder="Расскажи о своём желании"></textarea>
+
+      <label>Цена</label>
+      <input id="price" placeholder="Например, 5 000 ₽">
+
+      <label>Категория</label>
+      <input id="category" placeholder="Красота, одежда, техника...">
+
+      <label>Ссылка на магазин</label>
+      <input id="productUrl" type="url" placeholder="https://...">
+
+      <label>Фотография</label>
+      <input id="imageFile" type="file" accept="image/*">
+      <p class="muted">Можно загрузить JPG, PNG или WebP.</p>
+
+      <div class="actions">
+        <button type="submit" id="saveButton">Добавить желание</button>
+        <button type="button" class="secondary hidden" id="cancelButton">Отмена</button>
+      </div>
+    </form>
+  </section>
+
+  <section>
+    <div class="topline" style="margin:25px 0 17px">
+      <h2>Мои желания</h2>
+      <span id="count" class="muted"></span>
+    </div>
+    <div id="wishes" class="grid"></div>
+  </section>
 </main>
+
 <footer>Создано с любовью ♡ Angelika</footer>
+
 <script>
-// ВСТАВЬ СЮДА СВОИ ДАННЫЕ ИЗ SUPABASE
 const SUPABASE_URL = "https://ramhwwrpsdiyufgkwtjl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_xn2eUru7V0E-zFpfxPI7Xw_iHqc7Sfw";
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const db = window.supabase
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
+const OWNER_ID = "ff88215e-76e1-4d60-bfec-fab3f8df207d";
+
 let currentUser = null;
 let editingId = null;
 let currentImage = "";
+
 const $ = id => document.getElementById(id);
-function showMessage(text) {
-  $("message").textContent = text;
+
+function showMessage(message) {
+  $("message").textContent = message;
 }
+
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#039;"
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
   })[char]);
 }
-function toggleLogin() {
-  $("loginPanel").classList.toggle("hidden");
-}
+
 function safeUrl(value) {
   try {
     const url = new URL(value);
@@ -124,15 +149,38 @@ function safeUrl(value) {
     return "";
   }
 }
+
+$("loginToggle").addEventListener("click", () => {
+  $("loginPanel").classList.toggle("hidden");
+});
+
+$("logoutButton").addEventListener("click", logout);
+$("cancelButton").addEventListener("click", cancelEdit);
+
+function updateInterface() {
+  $("loginToggle").classList.toggle("hidden", !!currentUser);
+  $("loginPanel").classList.add("hidden");
+  $("adminPanel").classList.toggle("hidden", !currentUser);
+  $("editor").classList.toggle("hidden", !currentUser);
+  loadWishes();
+}
+
 async function loadWishes() {
-  const {data, error} = await db
+  if (!db) {
+    showMessage("Не удалось подключиться к Supabase. Проверь загрузку библиотеки.");
+    return;
+  }
+
+  const { data, error } = await db
     .from("wishes")
     .select("*")
-    .order("created_at", {ascending:false});
+    .order("created_at", { ascending: false });
+
   if (error) {
     showMessage("Не удалось загрузить желания: " + error.message);
     return;
   }
+
   $("count").textContent = `Всего: ${data.length}`;
   const container = $("wishes");
   container.innerHTML = "";
@@ -141,73 +189,101 @@ async function loadWishes() {
     container.innerHTML = '<p class="muted">Пока здесь нет желаний. Скоро они появятся ♡</p>';
     return;
   }
+
   data.forEach(wish => {
     const card = document.createElement("article");
     card.className = "card";
 
     const image = wish.image_url
-      ? <img src="${escapeHTML(wish.image_url)}" alt="${escapeHTML(wish.title)}">
+      ? `<img src="${escapeHTML(wish.image_url)}" alt="${escapeHTML(wish.title)}">`
       : "";
+
     const link = safeUrl(wish.product_url);
+
     const linkHTML = link
-      ? <p><a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">Посмотреть в магазине ↗</a></p>
+      ? `<p><a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">Посмотреть в магазине ↗</a></p>`
       : "";
+
     const adminButtons = currentUser
       ? `<div class="actions">
-          <button class="secondary edit-button">Изменить</button>
-          <button class="danger delete-button">Удалить</button>
+          <button type="button" class="secondary edit-button">Изменить</button>
+          <button type="button" class="danger delete-button">Удалить</button>
         </div>`
       : "";
+
     card.innerHTML = `
       ${image}
       <div class="card-content">
         <h3>${escapeHTML(wish.title)}</h3>
-        ${wish.category ? `<p class="muted">{escapeHTML(wish.category)}</p>` : ""}
-        ${wish.description ? <p>${escapeHTML(wish.description)}</p> : ""}
-        ${wish.price ? <div class="price">${escapeHTML(wish.price)}</div> : ""}
+        ${wish.category ? `<p class="muted">${escapeHTML(wish.category)}</p>` : ""}
+        ${wish.description ? `<p>${escapeHTML(wish.description)}</p>` : ""}
+        ${wish.price ? `<div class="price">${escapeHTML(wish.price)}</div>` : ""}
         ${linkHTML}
         ${adminButtons}
       </div>`;
+
     if (currentUser) {
-      card.querySelector(".edit-button").onclick = () => editWish(wish);
-      card.querySelector(".delete-button").onclick = () => deleteWish(wish);
+      card.querySelector(".edit-button").addEventListener("click", () => editWish(wish));
+      card.querySelector(".delete-button").addEventListener("click", () => deleteWish(wish));
     }
+
     container.appendChild(card);
   });
 }
-function updateInterface() {
-  $("loginToggle").classList.toggle("hidden", !!currentUser);
-  $("loginPanel").classList.add("hidden");
-  $("adminPanel").classList.toggle("hidden", !currentUser);
-  $("editor").classList.toggle("hidden", !currentUser);
-  loadWishes();
-}
+
 $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
-  showMessage("Выполняется вход...");
-  const {data, error} = await db.auth.signInWithPassword({
-    email: $("email").value,
-    password: $("password").value
-  });
-  if (error) {
-    showMessage("Ошибка входа: " + error.message);
+
+  if (!db) {
+    showMessage("Библиотека Supabase не загрузилась. Обнови страницу.");
     return;
   }
-  currentUser = data.user;
-  updateInterface();
-  showMessage("Добро пожаловать! 💗");
+
+  const button = $("loginButton");
+  button.disabled = true;
+  showMessage("Выполняется вход...");
+
+  try {
+    const { data, error } = await db.auth.signInWithPassword({
+      email: $("email").value.trim(),
+      password: $("password").value
+    });
+
+    if (error) {
+      showMessage("Ошибка входа: " + error.message);
+      return;
+    }
+
+    if (data.user.id !== OWNER_ID) {
+      await db.auth.signOut();
+      showMessage("У этого аккаунта нет прав администратора.");
+      return;
+    }
+
+    currentUser = data.user;
+    updateInterface();
+    showMessage("Добро пожаловать! 💗");
+  } catch (error) {
+    showMessage("Ошибка: " + error.message);
+  } finally {
+    button.disabled = false;
+  }
 });
+
 async function logout() {
-  const {error} = await db.auth.signOut();
+  const { error } = await db.auth.signOut();
+
   if (error) {
     showMessage(error.message);
     return;
   }
+
   currentUser = null;
   cancelEdit();
   updateInterface();
   showMessage("Ты вышла из аккаунта.");
 }
+
 function cancelEdit() {
   editingId = null;
   currentImage = "";
@@ -216,6 +292,7 @@ function cancelEdit() {
   $("saveButton").textContent = "Добавить желание";
   $("cancelButton").classList.add("hidden");
 }
+
 function editWish(wish) {
   editingId = wish.id;
   currentImage = wish.image_url || "";
@@ -226,88 +303,143 @@ function editWish(wish) {
   $("category").value = wish.category || "";
   $("productUrl").value = wish.product_url || "";
   $("imageFile").value = "";
-  $("formTitle").
-   textContent = "Редактировать желание";
+
+  $("formTitle").textContent = "Редактировать желание";
   $("saveButton").textContent = "Сохранить изменения";
   $("cancelButton").classList.remove("hidden");
-  $("editor").scrollIntoView({behavior:"smooth"});
+  $("editor").scrollIntoView({ behavior: "smooth" });
 }
+
 $("wishForm").addEventListener("submit", async event => {
   event.preventDefault();
-  if (!currentUser) {
-    showMessage("Сначала войди в аккаунт.");
+
+  if (!currentUser || currentUser.id !== OWNER_ID) {
+    showMessage("Сначала войди в аккаунт администратора.");
     return;
   }
+
   const title = $("title").value.trim();
   if (!title) return;
 
-  const file = $("imageFile").files[0];
-  let imageUrl = currentImage;
+  const button = $("saveButton");
+  button.disabled = true;
 
-  if (file) {
-    if (!file.type.startsWith("image/")) {
-      showMessage("Выбери файл изображения.");
+  try {
+    const file = $("imageFile").files[0];
+    let imageUrl = currentImage;
+
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        showMessage("Выбери файл изображения.");
+        return;
+      }
+
+      const extension = file.name.split(".").pop().replace(/[^a-zA-Z0-9]/g, "") || "jpg";
+      const path = `${currentUser.id}/${Date.now()}.${extension}`;
+
+      showMessage("Загружаю фотографию...");
+
+      const { error: uploadError } = await db.storage
+        .from("wish-images")
+        .upload(path, file, { upsert: false });
+
+      if (uploadError) {
+        showMessage("Ошибка загрузки фото: " + uploadError.message);
+        return;
+      }
+
+      const { data } = db.storage.from("wish-images").getPublicUrl(path);
+      imageUrl = data.publicUrl;
+    }
+
+    const wish = {
+      title,
+      description: $("description").value.trim(),
+      price: $("price").value.trim(),
+      category: $("category").value.trim(),
+      product_url: $("productUrl").value.trim(),
+      image_url: imageUrl
+    };
+
+    let result;
+
+    if (editingId) {
+      result = await db.from("wishes")
+        .update(wish)
+        .eq("id", editingId);
+    } else {
+      result = await db.from("wishes")
+        .insert({ ...wish, user_id: currentUser.id });
+    }
+
+    if (result.error) {
+      showMessage("Не удалось сохранить: " + result.error.message);
       return;
     }
-    const extension = file.name.split(".").pop().replace(/[^a-zA-Z0-9]/g,"") || "jpg";
-    const path = ${currentUser.id}/${Date.now()}.${extension};
-    showMessage("Загружаю фотографию...");
-    const {error: uploadError} = await db.storage
-      .from("wish-images")
-      .upload(path, file, {upsert:false});
-    if (uploadError) {
-      showMessage("Ошибка загрузки фото: " + uploadError.message);
-      return;
-    }
-    const {data} = db.storage.from("wish-images").getPublicUrl(path);
-    imageUrl = data.publicUrl;
+
+    cancelEdit();
+    showMessage("Желание сохранено! ♡");
+    await loadWishes();
+  } catch (error) {
+    showMessage("Ошибка: " + error.message);
+  } finally {
+    button.disabled = false;
   }
-  const wish = {
-    title,
-    description: $("description").value.trim(),
-    price: $("price").value.trim(),
-    category: $("category").value.trim(),
-    product_url: $("productUrl").value.trim(),
-    image_url: imageUrl
-  };
-  let result;
-  if (editingId) {
-    result = await db.from("wishes")
-      .update(wish)
-      .eq("id", editingId);
-  } else {
-    result = await db.from("wishes")
-      .insert({...wish, user_id:currentUser.id});
-  }
-  if (result.error) {
-    showMessage("Не удалось сохранить: " + result.error.message);
-    return;
-  }
-  cancelEdit();
-  showMessage("Желание сохранено! ♡");
-  await loadWishes();
 });
+
 async function deleteWish(wish) {
   if (!confirm(`Удалить желание «${wish.title}»?`)) return;
-  const {error} = await db.from("wishes")
+
+  const { error } = await db.from("wishes")
     .delete()
     .eq("id", wish.id);
+
   if (error) {
     showMessage("Не удалось удалить: " + error.message);
     return;
   }
+
   showMessage("Желание удалено.");
-  loadWishes();
+  await loadWishes();
 }
+
 async function init() {
-  const {data} = await db.auth.getSession();
-  currentUser = data.session?.user || null;
-  updateInterface();
-  db.auth.onAuthStateChange((_event, session) => {
-    currentUser = session?.user || null;
+  if (!db) {
+    showMessage("Не загрузилась библиотека Supabase. Проверь подключение к интернету.");
+    return;
+  }
+
+  try {
+    const { data, error } = await db.auth.getSession();
+
+    if (error) {
+      showMessage("Ошибка подключения: " + error.message);
+      return;
+    }
+
+    currentUser = data.session?.user || null;
+
+    if (currentUser && currentUser.id !== OWNER_ID) {
+      await db.auth.signOut();
+      currentUser = null;
+    }
+
     updateInterface();
-  });
+
+    db.auth.onAuthStateChange((_event, session) => {
+      currentUser = session?.user || null;
+
+      if (currentUser && currentUser.id !== OWNER_ID) {
+        currentUser = null;
+      }
+
+      updateInterface();
+    });
+  } catch (error) {
+    showMessage("Ошибка запуска: " + error.message);
+  }
 }
+
 init();
 </script>
 </body>

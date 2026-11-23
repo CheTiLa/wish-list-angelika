@@ -231,6 +231,112 @@ a {
   }
 }
 
+/* ===== PEARL & HEART DECOR ===== */
+
+main > section > h2 {
+  position: relative;
+  padding-bottom: 13px;
+}
+
+main > section > h2::after {
+  content: "♡  ·  ୨୧  ·  ♡";
+  display: block;
+  color: #d5a2b1;
+  font-size: 15px;
+  letter-spacing: 5px;
+  margin-top: 9px;
+}
+
+.panel {
+  position: relative;
+}
+
+.panel::after {
+  content: "✧";
+  position: absolute;
+  right: 19px;
+  top: 12px;
+  color: #d8b6bd;
+  font-size: 17px;
+  pointer-events: none;
+}
+
+.card-content::after {
+  content: "♡";
+  display: block;
+  text-align: right;
+  color: #dfb7c2;
+  font-size: 19px;
+  margin-top: 10px;
+}
+
+.fulfilled-badge {
+  font-family: Georgia, serif;
+  font-size: 14px;
+}
+
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+header .subtitle {
+  letter-spacing: 1.2px;
+}
+
+footer::before {
+  content: "୨୧  ♡  ୨୧";
+  display: block;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #c58da0;
+}
+
+.floating-hearts {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  height: 34px;
+  color: #d49bad;
+}
+
+.floating-hearts span {
+  display: inline-block;
+  animation: heartFloat 2.8s ease-in-out infinite;
+}
+
+.floating-hearts span:nth-child(2) {
+  animation-delay: .4s;
+}
+
+.floating-hearts span:nth-child(3) {
+  animation-delay: .8s;
+}
+
+.floating-hearts span:nth-child(4) {
+  animation-delay: 1.2s;
+}
+
+.floating-hearts span:nth-child(5) {
+  animation-delay: 1.6s;
+}
+
+@keyframes heartFloat {
+  0%, 100% {
+    transform: translateY(3px);
+    opacity: .65;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+  
 </style>
 </head>
 <body>
@@ -329,7 +435,18 @@ a {
 </section>
 </main>
 
-<footer>Создано с любовью ♡ Angelika</footer>
+
+<footer>
+  <div class="floating-hearts" aria-hidden="true">
+    <span>♡</span>
+    <span>♥</span>
+    <span>♡</span>
+    <span>♥</span>
+    <span>♡</span>
+  </div>
+  Создано с любовью ♡ Angelika
+</footer>
+
 
 <script>
 const SUPABASE_URL = "https://ramhwwrpsdiyufgkwtjl.supabase.co";

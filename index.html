@@ -1,49 +1,373 @@
-My wishes. My little world.</p>
- </section>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wish list Angelika ♡</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff8fb;color:#51434a;font-family:Arial,sans-serif}
+header{text-align:center;padding:55px 20px 35px;background:linear-gradient(135deg,#fff0f5,#f9dce8)}
+h1{font-family:Georgia,serif;font-size:38px;color:#bd7896;margin:0 0 12px}
+.subtitle{color:#987486}
+main{max-width:1050px;margin:30px auto;padding:0 18px}
+.panel{background:white;border:1px solid #f1dce6;border-radius:18px;padding:22px;margin-bottom:24px;box-shadow:0 5px 20px #dca9bf20}
+input,textarea,button{font:inherit}
+input,textarea{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #e8ccd9;border-radius:10px;background:#fffafd}
+textarea{min-height:85px;resize:vertical}
+button,.link-button{border:0;border-radius:22px;padding:11px 20px;background:#d99ab5;color:white;cursor:pointer;font-weight:bold}
+button:hover{background:#c77e9f}
+button.secondary{background:#f4e5ec;color:#86576e}
+button.danger{background:#a75d75}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:20px}
+.card{background:white;border:1px solid #f0dce5;border-radius:17px;overflow:hidden;box-shadow:0 5px 18px #dca9bf20}
+.card img{width:100%;height:210px;object-fit:cover;background:#faedf2}
+.card-content{padding:17px}
+.card h3{margin:0 0 9px;color:#a86685;font-family:Georgia,serif;font-size:22px}
+.price{font-weight:bold;color:#bd7896;margin:10px 0}
+.card a{color:#b56e8d}
+.muted{color:#9b8991;font-size:14px}
+.hidden{display:none!important}
+#message{margin:12px 0;color:#a45f7d}
+footer{text-align:center;padding:35px;color:#a88c9a}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+@media(max-width:550px){h1{font-size:30px}.panel{padding:16px}}
+</style>
+</head>
+<body>
 
-<footer>© 2026 Wish list Angelika ♡</footer>
+<header>
+<h1>Wish list Angelika ♡</h1>
+<div class="subtitle">Маленькие мечты и большие желания ✨</div>
+</header>
+
+<main>
+<section class="panel">
+<div class="topline">
+<strong>Мой список желаний ♡</strong>
+<button id="loginToggle" class="secondary" onclick="toggleLogin()">Войти</button>
+</div>
+
+<div id="loginPanel" class="hidden">
+<h3>Вход администратора</h3>
+<form id="loginForm">
+<label>Электронная почта</label>
+<input id="email" type="email" required placeholder="Твоя почта">
+<label>Пароль</label>
+<input id="password" type="password" required placeholder="Пароль">
+<button type="submit">Войти</button>
+</form>
+</div>
+
+<div id="adminPanel" class="hidden">
+<p>Ты вошла как администратор 💗</p>
+<button class="secondary" onclick="logout()">Выйти</button>
+</div>
+<div id="message"></div>
+</section>
+
+<section id="editor" class="panel hidden">
+<h2 id="formTitle">Добавить желание ♡</h2>
+<form id="wishForm">
+<label>Название желания *</label>
+<input id="title" required maxlength="150" placeholder="Например, сумочка мечты">
+
+<label>Описание</label>
+<textarea id="description" placeholder="Расскажи о своём желании"></textarea>
+
+<label>Цена</label>
+<input id="price" placeholder="Например, 5 000 ₽">
+
+<label>Категория</label>
+<input id="category" placeholder="Красота, одежда, техника...">
+
+<label>Ссылка на магазин</label>
+<input id="productUrl" type="url" placeholder="https://...">
+
+<label>Фотография</label>
+<input id="imageFile" type="file" accept="image/*">
+<p class="muted">Можно загрузить JPG, PNG или WebP.</p>
+
+<div class="actions">
+<button type="submit" id="saveButton">Добавить желание</button>
+<button type="button" class="secondary hidden" id="cancelButton" onclick="cancelEdit()">Отмена</button>
+</div>
+</form>
+</section>
+
+<section>
+<div class="topline" style="margin:25px 0 17px">
+<h2>Мои желания</h2>
+<span id="count" class="muted"></span>
+</div>
+<div id="wishes" class="grid"></div>
+</section>
+</main>
+
+<footer>Создано с любовью ♡ Angelika</footer>
 
 <script>
-const items=[
- {name:"Любимый парфюм",cat:"Beauty",desc:"Аромат, о котором мечтаю.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1541643600914-78b084683601?w=800",url:""},
- {name:"Стильная сумочка",cat:"Fashion",desc:"Новое дополнение к гардеробу.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800",url:""},
- {name:"Нежные украшения",cat:"Accessories",desc:"Маленькая деталь моего образа.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800",url:""},
- {name:"Уютный декор",cat:"Lifestyle",desc:"Красивые вещи для дома.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800",url:""},
- {name:"Косметика",cat:"Beauty",desc:"Мои будущие beauty-фавориты.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800",url:""},
- {name:"Новое платье",cat:"Fashion",desc:"Образ для особенного дня.",price:"Добавить цену",img:"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800",url:""}
-];
-let selected="all";
-function render(){
- const q=document.getElementById("search").value.toLowerCase();
- const list=items.filter(x=>(selected==="all"||x.cat===selected)&&x.name.toLowerCase().includes(q));
- const root=document.getElementById("cards");
- root.innerHTML="";
- if(!list.length){root.innerHTML='<div class="empty">Пока ничего не найдено ♡</div>';return}
- list.forEach(x=>{
-  const card=document.createElement("article");
-  card.className="card";
-  const img=document.createElement("img");
-  img.src=x.img;img.alt=x.name;img.loading="lazy";
-  img.onerror=()=>img.style.display="none";
-  const content=document.createElement("div");
-  content.className="content";
-  const tag=document.createElement("div");tag.className="tag";tag.textContent=x.cat;
-  const title=document.createElement("h3");title.textContent=x.name;
-  const desc=document.createElement("p");desc.textContent=x.desc;
-  const price=document.createElement("div");price.className="price";price.textContent=x.price;
-  content.append(tag,title,desc,price);
-  if(x.url){
-   const a=document.createElement("a");a.href=x.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Посмотреть ♡";content.append(a);
-  }
-  card.append(img,content);root.append(card);
- });
+// ВСТАВЬ СЮДА СВОИ ДАННЫЕ ИЗ SUPABASE
+ const SUPABASE_URL = "https://ramhwwrpsdiyufgkwtjl.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_xn2eUru7V0E-zFpfxPI7Xw_iHqc7Sfw";
+
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let editingId = null;
+let currentImage = "";
+
+const $ = id => document.getElementById(id);
+
+function showMessage(text) {
+  $("message").textContent = text;
 }
-document.querySelectorAll(".category").forEach(b=>b.addEventListener("click",()=>{
- selected=b.dataset.cat;
- document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));
- b.classList.add("active");render();
-}));
-render();
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#039;"
+  })[char]);
+}
+
+function toggleLogin() {
+  $("loginPanel").classList.toggle("hidden");
+}
+
+function safeUrl(value) {
+  try {
+    const url = new URL(value);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+async function loadWishes() {
+  const {data, error} = await db
+    .from("wishes")
+    .select("*")
+    .order("created_at", {ascending:false});
+
+  if (error) {
+    showMessage("Не удалось загрузить желания: " + error.message);
+    return;
+  }
+
+  $("count").textContent = Всего: ${data.length};
+  const container = $("wishes");
+  container.innerHTML = "";
+
+  if (!data.length) {
+    container.innerHTML = '<p class="muted">Пока здесь нет желаний. Скоро они появятся ♡</p>';
+    return;
+  }
+
+  data.forEach(wish => {
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const image = wish.image_url
+      ? <img src="${escapeHTML(wish.image_url)}" alt="${escapeHTML(wish.title)}">
+      : "";
+
+    const link = safeUrl(wish.product_url);
+    const linkHTML = link
+      ? <p><a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">Посмотреть в магазине ↗</a></p>
+      : "";
+
+    const adminButtons = currentUser
+      ? `<div class="actions">
+          <button class="secondary edit-button">Изменить</button>
+          <button class="danger delete-button">Удалить</button>
+        </div>`
+      : "";
+
+    card.innerHTML = `
+      ${image}
+      <div class="card-content">
+        <h3>${escapeHTML(wish.title)}</h3>
+        ${wish.category ? <p class="muted">${escapeHTML(wish.category)}</p> : ""}
+        ${wish.description ? <p>${escapeHTML(wish.description)}</p> : ""}
+        ${wish.price ? <div class="price">${escapeHTML(wish.price)}</div> : ""}
+        ${linkHTML}
+        ${adminButtons}
+      </div>`;
+
+    if (currentUser) {
+      card.querySelector(".edit-button").onclick = () => editWish(wish);
+      card.querySelector(".delete-button").onclick = () => deleteWish(wish);
+    }
+
+    container.appendChild(card);
+  });
+}
+
+function updateInterface() {
+  $("loginToggle").classList.toggle("hidden", !!currentUser);
+  $("loginPanel").classList.add("hidden");
+  $("adminPanel").classList.toggle("hidden", !currentUser);
+  $("editor").classList.toggle("hidden", !currentUser);
+  loadWishes();
+}
+
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  showMessage("Выполняется вход...");
+
+  const {data, error} = await db.auth.signInWithPassword({
+    email: $("email").value,
+    password: $("password").value
+  });
+
+  if (error) {
+    showMessage("Ошибка входа: " + error.message);
+    return;
+  }
+
+  currentUser = data.user;
+  updateInterface();
+  showMessage("Добро пожаловать! 💗");
+});
+
+async function logout() {
+  const {error} = await db.auth.signOut();
+  if (error) {
+    showMessage(error.message);
+    return;
+  }
+  currentUser = null;
+  cancelEdit();
+  updateInterface();
+  showMessage("Ты вышла из аккаунта.");
+}
+
+function cancelEdit() {
+  editingId = null;
+  currentImage = "";
+  $("wishForm").reset();
+  $("formTitle").textContent = "Добавить желание ♡";
+  $("saveButton").textContent = "Добавить желание";
+  $("cancelButton").classList.add("hidden");
+}
+
+function editWish(wish) {
+  editingId = wish.id;
+  currentImage = wish.image_url || "";
+
+  $("title").value = wish.title || "";
+  $("description").value = wish.description || "";
+  $("price").value = wish.price || "";
+  $("category").value = wish.category || "";
+  $("productUrl").value = wish.product_url || "";
+  $("imageFile").value = "";
+
+  $("formTitle").
+   textContent = "Редактировать желание";
+  $("saveButton").textContent = "Сохранить изменения";
+  $("cancelButton").classList.remove("hidden");
+
+  $("editor").scrollIntoView({behavior:"smooth"});
+}
+
+$("wishForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (!currentUser) {
+    showMessage("Сначала войди в аккаунт.");
+    return;
+  }
+
+  const title = $("title").value.trim();
+  if (!title) return;
+
+  const file = $("imageFile").files[0];
+  let imageUrl = currentImage;
+
+  if (file) {
+    if (!file.type.startsWith("image/")) {
+      showMessage("Выбери файл изображения.");
+      return;
+    }
+
+    const extension = file.name.split(".").pop().replace(/[^a-zA-Z0-9]/g,"") || "jpg";
+    const path = ${currentUser.id}/${Date.now()}.${extension};
+
+    showMessage("Загружаю фотографию...");
+
+    const {error: uploadError} = await db.storage
+      .from("wish-images")
+      .upload(path, file, {upsert:false});
+
+    if (uploadError) {
+      showMessage("Ошибка загрузки фото: " + uploadError.message);
+      return;
+    }
+
+    const {data} = db.storage.from("wish-images").getPublicUrl(path);
+    imageUrl = data.publicUrl;
+  }
+
+  const wish = {
+    title,
+    description: $("description").value.trim(),
+    price: $("price").value.trim(),
+    category: $("category").value.trim(),
+    product_url: $("productUrl").value.trim(),
+    image_url: imageUrl
+  };
+
+  let result;
+
+  if (editingId) {
+    result = await db.from("wishes")
+      .update(wish)
+      .eq("id", editingId);
+  } else {
+    result = await db.from("wishes")
+      .insert({...wish, user_id:currentUser.id});
+  }
+
+  if (result.error) {
+    showMessage("Не удалось сохранить: " + result.error.message);
+    return;
+  }
+
+  cancelEdit();
+  showMessage("Желание сохранено! ♡");
+  await loadWishes();
+});
+
+async function deleteWish(wish) {
+  if (!confirm(`Удалить желание «${wish.title}»?`)) return;
+
+  const {error} = await db.from("wishes")
+    .delete()
+    .eq("id", wish.id);
+
+  if (error) {
+    showMessage("Не удалось удалить: " + error.message);
+    return;
+  }
+
+  showMessage("Желание удалено.");
+  loadWishes();
+}
+
+async function init() {
+  const {data} = await db.auth.getSession();
+  currentUser = data.session?.user || null;
+  updateInterface();
+
+  db.auth.onAuthStateChange((_event, session) => {
+    currentUser = session?.user || null;
+    updateInterface();
+  });
+}
+
+init();
 </script>
 </body>
 </html>

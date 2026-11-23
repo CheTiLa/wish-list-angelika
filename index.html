@@ -203,7 +203,7 @@ async function loadWishes() {
 
   data.forEach(wish => {
     const card = document.createElement("article");
-    card.className = "card";
+    card.className = wish.fulfilled ? "card fulfilled" : "card";
 
     const image = wish.image_url
       ? `<img src="${escapeHTML(wish.image_url)}" alt="${escapeHTML(wish.title)}">`
@@ -216,13 +216,17 @@ async function loadWishes() {
       : "";
 
     const adminButtons = currentUser
-      ? `<div class="actions">
-          <button type="button" class="secondary edit-button">Изменить</button>
-          <button type="button" class="danger delete-button">Удалить</button>
-        </div>`
-      : "";
+  ? `<div class="actions">
+      <button type="button" class="secondary fulfill-button">
+        ${wish.fulfilled ? "Вернуть в список" : "Мечта сбылась! ✨"}
+      </button>
+      <button type="button" class="secondary edit-button">Изменить</button>
+      <button type="button" class="danger delete-button">Удалить</button>
+    </div>`
+  : "";
 
     card.innerHTML = `
+          ${wish.fulfilled ? '<div class="fulfilled-badge">♡ МЕЧТА СБЫЛАСЬ! ♡ ✨</div>' : ""}
       ${image}
       <div class="card-content">
         <h3>${escapeHTML(wish.title)}</h3>
@@ -235,6 +239,7 @@ async function loadWishes() {
 
     if (currentUser) {
       card.querySelector(".edit-button").addEventListener("click", () => editWish(wish));
+      card.querySelector(".fulfill-button").addEventListener("click", () => toggleFulfilled(wish));
       card.querySelector(".delete-button").addEventListener("click", () => deleteWish(wish));
     }
 
@@ -397,7 +402,26 @@ $("wishForm").addEventListener("submit", async event => {
     button.disabled = false;
   }
 });
+  
+async function toggleFulfilled(wish) {
+  const { error } = await db
+    .from("wishes")
+    .update({ fulfilled: !wish.fulfilled })
+    .eq("id", wish.id);
 
+  if (error) {
+    showMessage("Не удалось изменить статус: " + error.message);
+    return;
+  }
+
+  showMessage(
+    wish.fulfilled
+      ? "Мечта снова в списке! 💗"
+      : "УРА! МЕЧТА СБЫЛАСЬ! ✨🎉"
+  );
+
+  await loadWishes();
+}
 async function deleteWish(wish) {
   if (!confirm(`Удалить желание «${wish.title}»?`)) return;
 

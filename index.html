@@ -111,13 +111,33 @@ footer{text-align:center;padding:35px;color:#a88c9a}
     </form>
   </section>
 
-  <section>
-    <div class="topline" style="margin:25px 0 17px">
-      <h2>Мои желания</h2>
-      <span id="count" class="muted"></span>
+  <section class="panel">
+  <h2 style="text-align:center;color:#bd7896">Мои маленькие чудеса ♡</h2>
+
+  <div class="grid">
+    <div style="background:#fff0f5;padding:20px;border-radius:15px;text-align:center">
+      <div id="totalCount" style="font-size:36px;color:#bd7896;font-weight:bold">0</div>
+      <div class="muted">Всего желаний</div>
     </div>
-    <div id="wishes" class="grid"></div>
-  </section>
+
+    <div style="background:#fff7e8;padding:20px;border-radius:15px;text-align:center">
+      <div id="fulfilledCount" style="font-size:36px;color:#b68a43;font-weight:bold">0</div>
+      <div class="muted">Исполнено ✨</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>♡ Мои желания</h2>
+  <div id="count" class="muted"></div>
+  <div id="wishes" class="grid"></div>
+</section>
+
+<section style="margin-top:40px">
+  <h2 style="color:#b68a43">✨ Мечты сбылись</h2>
+  <p class="muted">Маленькая коллекция больших радостей ♡</p>
+  <div id="fulfilledWishes" class="grid"></div>
+</section>
 </main>
 
 <footer>Создано с любовью ♡ Angelika</footer>
@@ -176,9 +196,10 @@ function updateInterface() {
   loadWishes();
 }
 
+
 async function loadWishes() {
   if (!db) {
-    showMessage("Не удалось подключиться к Supabase. Проверь загрузку библиотеки.");
+    showMessage("Не удалось подключиться к Supabase.");
     return;
   }
 
@@ -192,60 +213,87 @@ async function loadWishes() {
     return;
   }
 
-  $("count").textContent = `Всего: ${data.length}`;
-  const container = $("wishes");
-  container.innerHTML = "";
+  const activeWishes = data.filter(wish => !wish.fulfilled);
+  const completedWishes = data.filter(wish => wish.fulfilled);
 
-  if (!data.length) {
-    container.innerHTML = '<p class="muted">Пока здесь нет желаний. Скоро они появятся ♡</p>';
-    return;
-  }
+  $("totalCount").textContent = data.length;
+  $("fulfilledCount").textContent = completedWishes.length;
+  $("count").textContent = `Осталось исполнить: ${activeWishes.length}`;
 
-  data.forEach(wish => {
-    const card = document.createElement("article");
-    card.className = wish.fulfilled ? "card fulfilled" : "card";
+  function renderCards(wishes, containerId, emptyText) {
+    const container = $(containerId);
+    container.innerHTML = "";
 
-    const image = wish.image_url
-      ? `<img src="${escapeHTML(wish.image_url)}" alt="${escapeHTML(wish.title)}">`
-      : "";
-
-    const link = safeUrl(wish.product_url);
-
-    const linkHTML = link
-      ? `<p><a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">Посмотреть в магазине ↗</a></p>`
-      : "";
-
-    const adminButtons = currentUser
-  ? `<div class="actions">
-      <button type="button" class="secondary fulfill-button">
-        ${wish.fulfilled ? "Вернуть в список" : "Мечта сбылась! ✨"}
-      </button>
-      <button type="button" class="secondary edit-button">Изменить</button>
-      <button type="button" class="danger delete-button">Удалить</button>
-    </div>`
-  : "";
-
-    card.innerHTML = `
-          ${wish.fulfilled ? '<div class="fulfilled-badge">♡ МЕЧТА СБЫЛАСЬ! ♡ ✨</div>' : ""}
-      ${image}
-      <div class="card-content">
-        <h3>${escapeHTML(wish.title)}</h3>
-        ${wish.category ? `<p class="muted">${escapeHTML(wish.category)}</p>` : ""}
-        ${wish.description ? `<p>${escapeHTML(wish.description)}</p>` : ""}
-        ${wish.price ? `<div class="price">${escapeHTML(wish.price)}</div>` : ""}
-        ${linkHTML}
-        ${adminButtons}
-      </div>`;
-
-    if (currentUser) {
-      card.querySelector(".edit-button").addEventListener("click", () => editWish(wish));
-      card.querySelector(".fulfill-button").addEventListener("click", () => toggleFulfilled(wish));
-      card.querySelector(".delete-button").addEventListener("click", () => deleteWish(wish));
+    if (!wishes.length) {
+      container.innerHTML =
+        `<p class="muted">${emptyText}</p>`;
+      return;
     }
 
-    container.appendChild(card);
-  });
+    wishes.forEach(wish => {
+      const card = document.createElement("article");
+      card.className = wish.fulfilled ? "card fulfilled" : "card";
+
+      const image = wish.image_url
+        ? `<img src="${escapeHTML(wish.image_url)}" alt="${escapeHTML(wish.title)}">`
+        : "";
+
+      const link = safeUrl(wish.product_url);
+
+      const linkHTML = link
+        ? `<p><a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">Посмотреть в магазине ↗</a></p>`
+        : "";
+
+      const adminButtons = currentUser
+        ? `<div class="actions">
+            <button type="button" class="secondary fulfill-button">
+              ${wish.fulfilled ? "Вернуть в список" : "Мечта сбылась! ✨"}
+            </button>
+            <button type="button" class="secondary edit-button">Изменить</button>
+            <button type="button" class="danger delete-button">Удалить</button>
+          </div>`
+        : "";
+
+      card.innerHTML = `
+        ${wish.fulfilled ? '<div class="fulfilled-badge">♡ МЕЧТА СБЫЛАСЬ! ♡ ✨</div>' : ""}
+        ${image}
+        <div class="card-content">
+          <h3>${escapeHTML(wish.title)}</h3>
+          ${wish.category ? `<p class="muted">${escapeHTML(wish.category)}</p>` : ""}
+          ${wish.description ? `<p>${escapeHTML(wish.description)}</p>` : ""}
+          ${wish.price ? `<div class="price">${escapeHTML(wish.price)}</div>` : ""}
+          ${linkHTML}
+          ${adminButtons}
+        </div>`;
+
+      if (currentUser) {
+        card.querySelector(".fulfill-button")
+          .addEventListener("click", () => toggleFulfilled(wish));
+
+        card.querySelector(".edit-button")
+          .addEventListener("click", () => editWish(wish));
+
+        card.querySelector(".delete-button")
+          .addEventListener("click", () => deleteWish(wish));
+      }
+
+      container.appendChild(card);
+    });
+  }
+
+  renderCards(
+    activeWishes,
+    "wishes",
+    "Все желания уже исполнились! Какая радость! 💗"
+  );
+
+  renderCards(
+    completedWishes,
+    "fulfilledWishes",
+    "Здесь скоро появятся твои сбывшиеся мечты ✨"
+  );
 }
+
 
 $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();

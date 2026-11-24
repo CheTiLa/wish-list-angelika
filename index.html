@@ -550,29 +550,278 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ===== ELEGANT PEARL HERO ===== */
+
+header.hero {
+  width: 100%;
+  min-height: 440px;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 65px 20px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at center, #fffefd 0%, #fff8f7 48%, transparent 78%),
+    linear-gradient(135deg, #f8e5e9, #fff9f5, #f5e1e7);
+  border-bottom: 1px solid #ead0d7;
+}
+
+/* Центральный блок */
+
+.hero-inner {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Объёмный бант из CSS */
+
+.bow-decoration {
+  position: relative;
+  width: 125px;
+  height: 78px;
+  margin: 0 auto 25px;
+}
+
+.bow-loop {
+  position: absolute;
+  top: 9px;
+  width: 53px;
+  height: 42px;
+  background: linear-gradient(145deg, #f5cbd5, #d99eaf);
+  border: 1px solid #d9a8b5;
+  box-shadow: inset 0 3px 8px #fff8;
+}
+
+.bow-loop-left {
+  left: 7px;
+  border-radius: 80% 20% 65% 35%;
+  transform: rotate(18deg);
+}
+
+.bow-loop-right {
+  right: 7px;
+  border-radius: 20% 80% 35% 65%;
+  transform: rotate(-18deg);
+}
+
+.bow-knot {
+  position: absolute;
+  z-index: 3;
+  left: 51px;
+  top: 22px;
+  width: 23px;
+  height: 23px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #f8dce3, #c9879c);
+  box-shadow: 0 2px 7px #bd82934a;
+}
+
+.bow-tail {
+  position: absolute;
+  top: 40px;
+  width: 23px;
+  height: 35px;
+  background: linear-gradient(90deg, #d99eaf, #f5d3dc);
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 50% 78%, 15% 100%);
+}
+
+.bow-tail-left {
+  left: 34px;
+  transform: rotate(12deg);
+}
+
+.bow-tail-right {
+  right: 34px;
+  transform: rotate(-12deg);
+}
+
+/* Заголовок */
+
+.hero-logo {
+  width: 100%;
+  color: #b87990;
+  font-family: Georgia, serif;
+  font-size: clamp(25px, 4vw, 35px);
+  font-style: italic;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color: #b87990;
+  font-family: Georgia, serif;
+  font-size: clamp(30px, 5.5vw, 54px);
+  line-height: 1.25;
+  font-weight: normal;
+  text-align: center;
+  letter-spacing: .3px;
+}
+
+.hero-ornament,
+.hero-bottom-ornament {
+  color: #c998a7;
+  font-size: 19px;
+  letter-spacing: 8px;
+  text-align: center;
+}
+
+.hero-ornament {
+  margin-bottom: 16px;
+}
+
+.hero-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+  margin: 23px auto 15px;
+  color: #c28b9e;
+  font-size: 22px;
+}
+
+.hero-divider span {
+  display: block;
+  width: 65px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d7aab7);
+}
+
+.hero-divider span:last-child {
+  transform: rotate(180deg);
+}
+
+.hero .subtitle {
+  width: 100%;
+  color: #987985;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.hero-bottom-ornament {
+  margin-top: 25px;
+}
+
+/* Жемчужные нити по краям */
+
+.pearl-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 35px;
+  opacity: .75;
+  background-image: radial-gradient(
+    circle,
+    #fff 0 3px,
+    #e7cbd2 3.5px,
+    transparent 5px
+  );
+  background-size: 18px 23px;
+}
+
+.pearl-left {
+  left: 18px;
+}
+
+.pearl-right {
+  right: 18px;
+}
+
+/* Адаптация для телефонов */
+
+@media (max-width: 600px) {
+  header.hero {
+    min-height: 390px;
+    padding: 45px 35px;
+  }
+
+  .hero-inner {
+    max-width: 100%;
+  }
+
+  .bow-decoration {
+    transform: scale(.85);
+    margin-bottom: 15px;
+  }
+
+  .hero h1 {
+    font-size: clamp(29px, 8vw, 38px);
+  }
+
+  .hero-logo {
+    font-size: 25px;
+  }
+
+  .pearl-left {
+    left: 5px;
+  }
+
+  .pearl-right {
+    right: 5px;
+  }
+
+  .pearl-line {
+    width: 16px;
+    background-size: 13px 19px;
+  }
+
+  .hero-divider span {
+    width: 38px;
+  }
+}
+
   
 </style>
 </head>
 <body>
 
-
-
 <header class="hero">
-  <div class="hero-decor hero-bow">🎀</div>
-  <div class="hero-decor hero-pearls">♡ · ◦ · ♡ · ◦ · ♡</div>
+  <div class="pearl-line pearl-left"></div>
+  <div class="pearl-line pearl-right"></div>
 
-  <div class="hero-content">
-    <div class="hero-logo">Wish list Angelika ♡</div>
+  <div class="hero-inner">
+    <div class="bow-decoration">
+      <span class="bow-loop bow-loop-left"></span>
+      <span class="bow-loop bow-loop-right"></span>
+      <span class="bow-knot"></span>
+      <span class="bow-tail bow-tail-left"></span>
+      <span class="bow-tail bow-tail-right"></span>
+    </div>
+
+    <div class="hero-ornament">♡  ·  ✧  ·  ♡</div>
+
+    <div class="hero-logo">Wish list Angelika</div>
+
     <h1>Маленькие мечты —<br>большие чудеса</h1>
-    <div class="hero-divider">୨୧ ✧ ୨୧</div>
+
+    <div class="hero-divider">
+      <span></span> ୨୧ <span></span>
+    </div>
+
     <div class="subtitle">
-      Пусть все желания сбудутся! ✨
+      Пусть все желания сбудутся
+    </div>
+
+    <div class="hero-bottom-ornament">
+      ✧　♡　✧
     </div>
   </div>
-
-  <div class="hero-decor hero-flowers">🌸 🌷 🌸</div>
 </header>
-
 
 <main>
   <section class="panel">
